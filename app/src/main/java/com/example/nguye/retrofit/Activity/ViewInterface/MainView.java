@@ -1,4 +1,4 @@
-package com.example.nguye.retrofit.Activity;
+package com.example.nguye.retrofit.Activity.ViewInterface;
 
 import com.example.nguye.retrofit.Model.DataLogin;
 import com.example.nguye.retrofit.Model.Datum;
@@ -12,6 +12,4 @@ import java.util.List;
 
 public interface MainView {
     void dataMain(List<Datum> listData);
-    void dataLogin(ReData reData);
-
 }

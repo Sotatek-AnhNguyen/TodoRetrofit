@@ -8,8 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.nguye.retrofit.Activity.ViewInterface.MainView;
 import com.example.nguye.retrofit.Adapter.AdapterMain;
-import com.example.nguye.retrofit.Model.DataLogin;
 import com.example.nguye.retrofit.Model.Datum;
 import com.example.nguye.retrofit.Model.ReData;
 import com.example.nguye.retrofit.Presenter.MainPresenter;
@@ -18,7 +18,7 @@ import com.example.nguye.retrofit.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MainView{
+public class MainActivity extends AppCompatActivity implements MainView {
     public static final int CODECREATE = 1;
     private AdapterMain adapterMain;
     private RecyclerView recyclerView;
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements MainView{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         intent = getIntent();
-        mainPresenter = new MainPresenter(this, this);
+        mainPresenter = new MainPresenter(this);
         token = intent.getStringExtra("Token");
         mainPresenter.loadDataMain(token);
         initView();
@@ -92,10 +92,5 @@ public class MainActivity extends AppCompatActivity implements MainView{
     public void dataMain(List<Datum> listData) {
         arrData.addAll(listData);
         adapterMain.notifyDataSetChanged();
-    }
-
-    @Override
-    public void dataLogin(ReData reData) {
-
     }
 }

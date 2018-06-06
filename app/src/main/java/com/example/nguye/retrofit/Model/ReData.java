@@ -10,13 +10,13 @@ import org.json.JSONObject;
  * Created by nguye on 28/05/2018.
  */
 
-public class ReData {
+public class ReData <T>{
     @SerializedName("success")
     @Expose
     private Boolean success;
     @SerializedName("data")
     @Expose
-    private JsonObject data;
+    private T data;
 
     public Boolean getSuccess() {
         return success;
@@ -26,11 +26,11 @@ public class ReData {
         this.success = success;
     }
 
-    public JsonObject getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(JsonObject data) {
+    public void setData(T data) {
         this.data = data;
     }
 }

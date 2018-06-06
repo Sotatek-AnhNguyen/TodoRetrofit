@@ -4,13 +4,11 @@ import com.example.nguye.retrofit.Model.DataLogin;
 import com.example.nguye.retrofit.Model.Datum;
 import com.example.nguye.retrofit.Model.ReData;
 
-import java.util.List;
-
 /**
- * Created by nguye on 29/05/2018.
+ * Created by nguye on 04/06/2018.
  */
 
-public interface LoadDataTodo {
-    void onSuccessTodo(List<Datum> arrData);
+public interface LoadDataReAToddo {
+    void onSuccessLogin(ReData<Datum> reData);
     void onFail(String message);
 }

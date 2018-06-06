@@ -4,29 +4,27 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.example.nguye.retrofit.Activity.ViewInterface.UpdateView;
 import com.example.nguye.retrofit.Model.Datum;
 import com.example.nguye.retrofit.Model.ReData;
-import com.example.nguye.retrofit.Presenter.MainPresenter;
+import com.example.nguye.retrofit.Presenter.UpdatePresenter;
 import com.example.nguye.retrofit.R;
-import com.google.gson.Gson;
-
-import java.util.List;
 
 /**
  * Created by nguye on 28/05/2018.
  */
 
-public class UpdateActivity extends AppCompatActivity implements View.OnClickListener, MainView {
+public class UpdateActivity extends AppCompatActivity implements View.OnClickListener, UpdateView {
     private EditText mEdttitle;
     private Button mBtUpdate;
-    private MainPresenter mainPresenter;
+    private UpdatePresenter updatePresenter;
     private String title;
     private String acToken;
     private Intent intenUpdate;
@@ -38,7 +36,7 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
         intenUpdate = getIntent();
-        mainPresenter = new MainPresenter(this,  this);
+        updatePresenter = new UpdatePresenter(this);
         acToken = intenUpdate.getStringExtra("tok");
         datum = (Datum) intenUpdate.getSerializableExtra("dat");
         pos = intenUpdate.getIntExtra("position", 1);
@@ -55,23 +53,12 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         title = mEdttitle.getText().toString();
-        mainPresenter.loadUpdate(datum.getId(), title, acToken);
+        updatePresenter.loadUpdate(datum.getId(), title, acToken);
         datum.setTitle(title);
         intenUpdate.putExtra("reData", datum);
         intenUpdate.putExtra("position", pos);
         setResult(RESULT_OK, intenUpdate);
         finish();
-    }
-
-    @Override
-    public void dataMain(List<Datum> listData) {
-
-    }
-
-    @Override
-    public void dataLogin(ReData reData) {
-        Datum datumRe = new Gson().fromJson(reData.getData(), Datum.class);
-
     }
 
     @Override
@@ -84,12 +71,19 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.mnUpdate:
-                mainPresenter.deleteATodo(datum.getId(), acToken);
+                updatePresenter.deleteATodo(datum.getId(), acToken);
                 intenUpdate.putExtra("position", pos);
                 setResult(RESULT_CANCELED, intenUpdate);
                 finish();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void update(ReData reData) {
+        if (reData.getSuccess()){
+            Toast.makeText(this, "Thành công", Toast.LENGTH_SHORT).show();
+        }
     }
 }

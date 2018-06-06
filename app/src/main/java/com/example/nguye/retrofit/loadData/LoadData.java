@@ -26,14 +26,25 @@ import retrofit2.Response;
 public class LoadData {
     private ReService reService;
     private LoadDataTodo loadDataTodo;
+    private LoadDataReAToddo loadDataReAToddo;
+    private LoadDataLogin loadDataLogin;
     private Gson gson;
-    private Context context;
 
-    public LoadData(LoadDataTodo loadDataTodo, Context context) {
+    public LoadData(LoadDataTodo loadDataTodo) {
         this.loadDataTodo = loadDataTodo;
         reService = ApiUtils.getReService();
         gson = new Gson();
-        this.context = context;
+    }
+
+    public LoadData(LoadDataReAToddo loadDataReAToddo) {
+        this.loadDataReAToddo = loadDataReAToddo;
+        reService = ApiUtils.getReService();
+        gson = new Gson();
+    }
+
+    public LoadData(LoadDataLogin loadDataLogin) {
+        this.loadDataLogin = loadDataLogin;
+        reService = ApiUtils.getReService();
     }
 
     public void getDataMain(String au){
@@ -57,73 +68,77 @@ public class LoadData {
     }
 
     public void getLogin(String email, String pass){
-        reService.login(email, pass).enqueue(new Callback<ReData>() {
+
+        reService.login(email, pass).enqueue(new Callback<ReData<DataLogin>>() {
             @Override
-            public void onResponse(Call<ReData> call, Response<ReData> response) {
+            public void onResponse(Call<ReData<DataLogin>> call, Response<ReData<DataLogin>> response) {
                 if (response.body().getSuccess()){
-                    loadDataTodo.onSuccessLogin(response.body());
+                    loadDataLogin.onSuccessLogin(response.body());
+                }else {
+                    loadDataLogin.onFail("fail");
                 }
             }
 
             @Override
-            public void onFailure(Call<ReData> call, Throwable t) {
+            public void onFailure(Call<ReData<DataLogin>> call, Throwable t) {
 
             }
         });
     }
 
     public void getRegister(String email, String pass, String name){
-        reService.register(email, pass, name).enqueue(new Callback<ReData>() {
+
+        reService.register(email, pass, name).enqueue(new Callback<ReData<Datum>>() {
             @Override
-            public void onResponse(Call<ReData> call, Response<ReData> response) {
+            public void onResponse(Call<ReData<Datum>> call, Response<ReData<Datum>> response) {
                 if (response.body().getSuccess()){
-                    loadDataTodo.onSuccessLogin(response.body());
-                    Toast.makeText(context, "Tạo tài khoản thành công", Toast.LENGTH_SHORT).show();
+                    loadDataReAToddo.onSuccessLogin(response.body());
+
                 }else {
-                    Toast.makeText(context, "Tạo tài khoản thất bại", Toast.LENGTH_SHORT).show();
+
                 }
             }
 
             @Override
-            public void onFailure(Call<ReData> call, Throwable t) {
+            public void onFailure(Call<ReData<Datum>> call, Throwable t) {
 
             }
         });
     }
 
     public void createATodo(String title, String au){
-        reService.createATodo(title, au).enqueue(new Callback<ReData>() {
+        reService.createATodo(title, au).enqueue(new Callback<ReData<Datum>>() {
             @Override
-            public void onResponse(Call<ReData> call, Response<ReData> response) {
+            public void onResponse(Call<ReData<Datum>> call, Response<ReData<Datum>> response) {
                 if (response.body().getSuccess()){
-                    loadDataTodo.onSuccessLogin(response.body());
-                    Toast.makeText(context, "Tạo thành công", Toast.LENGTH_SHORT).show();
+                    loadDataReAToddo.onSuccessLogin(response.body());
+
                 }else {
-                    Toast.makeText(context, "Tạo thất bại", Toast.LENGTH_SHORT).show();
+
                 }
             }
 
             @Override
-            public void onFailure(Call<ReData> call, Throwable t) {
+            public void onFailure(Call<ReData<Datum>> call, Throwable t) {
 
             }
         });
     }
 
     public void updateATodo(String id, String title, String au){
-        reService.update(id, title, au).enqueue(new Callback<ReData>() {
+        reService.update(id, title, au).enqueue(new Callback<ReData<Datum>>() {
             @Override
-            public void onResponse(Call<ReData> call, Response<ReData> response) {
+            public void onResponse(Call<ReData<Datum>> call, Response<ReData<Datum>> response) {
                 if (response.body().getSuccess()){
-                    loadDataTodo.onSuccessLogin(response.body());
-                    Toast.makeText(context, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                    loadDataReAToddo.onSuccessLogin(response.body());
+
                 }else {
-                    Toast.makeText(context, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+
                 }
             }
 
             @Override
-            public void onFailure(Call<ReData> call, Throwable t) {
+            public void onFailure(Call<ReData<Datum>> call, Throwable t) {
 
             }
         });
@@ -134,10 +149,10 @@ public class LoadData {
             @Override
             public void onResponse(Call<ReData> call, Response<ReData> response) {
                 if (response.body().getSuccess()){
-                    loadDataTodo.onSuccessLogin(response.body());
-                    Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                    loadDataReAToddo.onSuccessLogin(response.body());
+
                 }else {
-                    Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
+
                 }
             }
 

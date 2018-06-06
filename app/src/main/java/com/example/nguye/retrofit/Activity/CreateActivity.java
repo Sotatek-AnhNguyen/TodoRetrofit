@@ -7,32 +7,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.example.nguye.retrofit.Connect.ApiUtils;
-import com.example.nguye.retrofit.Connect.ReService;
-import com.example.nguye.retrofit.Model.Datum;
+import com.example.nguye.retrofit.Activity.ViewInterface.CreateView;
 import com.example.nguye.retrofit.Model.ReData;
-import com.example.nguye.retrofit.Presenter.MainPresenter;
+import com.example.nguye.retrofit.Presenter.CreatePresenter;
 import com.example.nguye.retrofit.R;
-
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by nguye on 28/05/2018.
  */
 
-public class CreateActivity extends AppCompatActivity implements View.OnClickListener , MainView{
+public class CreateActivity extends AppCompatActivity implements View.OnClickListener , CreateView {
     private EditText mEdtEmailCr;
     private EditText mEdtPassCr;
     private EditText mEdtName;
     private Button mBtCreate;
     private Intent intentCreate;
-    private MainPresenter mainPresenter;
+    private CreatePresenter createPresenter;
     private String emailCr;
     private String passCr;
 
@@ -41,7 +32,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
         intentCreate = getIntent();
-        mainPresenter = new MainPresenter(this, this);
+        createPresenter = new CreatePresenter(this);
         initView();
     }
 
@@ -59,22 +50,16 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
         emailCr = mEdtEmailCr.getText().toString();
         passCr = mEdtPassCr.getText().toString();
         String name = mEdtName.getText().toString();
-        mainPresenter.loadRegist(emailCr, passCr, name);
+        createPresenter.loadRegist(emailCr, passCr, name);
     }
 
     @Override
-    public void dataMain(List<Datum> listData) {
-
-    }
-
-    @Override
-    public void dataLogin(ReData reData) {
+    public void regist(ReData reData) {
         if (reData.getSuccess()){
             intentCreate.putExtra("emailCr", emailCr);
             intentCreate.putExtra("passCr", passCr);
             setResult(RESULT_OK, intentCreate);
             finish();
         }
-
     }
 }
